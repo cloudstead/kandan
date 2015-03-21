@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   # Kandan.devise_modules is defined in config/initializers/kandan.rb
   devise devise *Kandan.devise_modules
 
+  devise :omniauthable, :omniauth_providers => [:cloudos]
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :id, :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :locale, :gravatar_hash, :registration_status
 

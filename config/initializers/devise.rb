@@ -206,6 +206,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
+  config.omniauth :cloudos
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -229,4 +230,71 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
+end
+
+require 'omniauth'
+require 'httparty'
+require 'json'
+
+# Derived from omniauth-krb5, License: https://github.com/naffis/omniauth-krb5/blob/master/LICENSE
+module OmniAuth
+  module Strategies
+    class Cloudos
+      include OmniAuth::Strategy
+      args [:realm]
+      option :title, "CloudOs Authentication"
+
+      def initialize( app, *args, &block )
+        super
+      end
+
+      def request_phase
+        OmniAuth::Form.build(:title => options.title, :url => callback_path) do
+          text_field 'Username', 'username'
+          password_field 'Password', 'password'
+        end.to_response
+      end
+
+      def callback_phase
+        return fail!(:invalid_credentials) unless username && password
+        begin
+          options = {
+              :headers => { 'Content-Type' => 'application/json' },
+              :body => {
+                  :name => username,
+                  :password => password
+              }.to_json
+          }
+          response = HTTParty.post('http://127.0.0.1:3001/api/accounts', options)
+          if response.code == 200
+            @auth = JSON.parse(response.body)
+            return super
+          end
+          return fail!(:invalid_credentials)
+
+        rescue Exception => e
+          return fail!(:invalid_credentials, e)
+        end
+      end
+
+      uid do
+        @auth['account']['name']
+      end
+
+      info do
+        { :name  => @auth['account']['name'] }
+      end
+
+      protected
+
+      def username
+        request['username']
+      end
+
+      def password
+        request['password']
+      end
+
+    end
+  end
 end

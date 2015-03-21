@@ -47,9 +47,9 @@ group :development do
   gem 'pry-rails'
   gem 'quiet_assets'
   gem 'awesome_print'
-  gem 'better_errors'
+# gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'debugger'
+#  gem 'debugger'
 end
 
 group :test do
@@ -72,3 +72,11 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'jasmine', '~> 1.3.1'
 end
+
+
+# JS runtime
+gem 'therubyracer'
+
+# required for auth against cloudstead
+gem 'omniauth'
+gem 'httparty'
