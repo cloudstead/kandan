@@ -1,20 +1,18 @@
 <div class="devise">
-
-<h2>Sign In</h2>
-
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <p><%= f.label :username %><br />
-  <%= f.text_field :username %></p>
-
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
-
-  <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-  <% end -%>
-
-  <p><%= f.submit "Sign in" %></p>
-<% end %>
-
-<p><%= render :partial => "devise/shared/links" %></p>
+  <h3 class="heading">Sign In</h3>
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :role => :form) do |f| %>
+    <div class="form-group">
+      <%= label_tag :username, "Username", :class => "control-label" %>
+      <%= f.text_field :username,  :autofocus => true, :placeholder => 'jsmith', :class => "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :password, "Password", :class => "control-label" %>
+      <%= f.password_field :password, :class => "form-control"%>
+    </div>
+    <label class="checkbox">
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+    <%= f.submit "Sign in",  :class => "btn  btn-primary" %>
+  <% end %>
+  <%= render :partial => "devise/shared/links" %>
 </div>

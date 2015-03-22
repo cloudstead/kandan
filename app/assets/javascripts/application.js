@@ -11,8 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery-ui
 //= require jquery_ujs
+//= require jquery.remotipart
 //= require lib/jquery.filedrop
 //= require lib/underscore
 //= require lib/underscore.string
@@ -23,3 +23,4 @@
 //= require lib/jquery.atwho
 //= require lib/jquery.caret
 //= require lib/jquery.inputHistory
+//= require bootstrap

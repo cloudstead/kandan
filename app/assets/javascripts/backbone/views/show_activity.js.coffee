@@ -7,12 +7,20 @@ class Kandan.Views.ShowActivity extends Backbone.View
     activity = @options.activity.toJSON()
     activity.content = _.escape(activity.content)
     activity.avatarUrl = Kandan.Helpers.Avatars.urlFor(@options.activity, {size: 30})
-    if activity.action != "message"
-      @compiledTemplate = JST['user_notification']({activity: activity})
-    else
-      activity.content =  Kandan.Modifiers.process(activity)
 
-      @compiledTemplate = Kandan.Helpers.Activities.buildFromMessageTemplate activity
+    switch activity.action
+      when "message"
+        activity.content =  Kandan.Modifiers.process(activity, @options)
+        @compiledTemplate = Kandan.Helpers.Activities.buildFromMessageTemplate activity
+      when "upload"
+        file_path = _.unescape(activity.content).split('?')[0].split('/')
+        activity.filename = decodeURIComponent(file_path[file_path.length-1])
+        @compiledTemplate = JST['user_notification']({activity: activity})
+      else
+        @compiledTemplate = JST['user_notification']({activity: activity})
+
+    if activity.action == 'connect' or activity.action == 'disconnect'
+      $(@el).addClass(activity.action)
 
     $(@el).data("activity-id", activity.id)
     if activity.action == "message"
@@ -22,6 +30,7 @@ class Kandan.Views.ShowActivity extends Backbone.View
 
       if activity.user.id == Kandan.Helpers.Users.currentUser().id
         $(@el).addClass("current_user")
+
 
       # Only fire mentions if we are not loading old messages
       if !@options.silence_mentions && (user_mention_regex.test(@compiledTemplate) || all_mention_regex.test(@compiledTemplate))

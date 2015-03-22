@@ -5,20 +5,19 @@ class Kandan.Plugins.UserList
   @pluginNamespace: "Kandan.Plugins.UserList"
 
   @template: _.template '''
-    <div class="user clearfix">  
+    <li class="user" title="<%= name %>">
       <img class="avatar" src="<%= avatarUrl %>"/>
-      <span class="name"><%= name %></span>
-      <% if(admin){ %>
-          &nbsp;<span class="badge badge-important">Admin</span>
-      <% } %>  
-    </div>
+      <%- name %><% if(admin){ %> <span class="badge badge-important">Admin</span><% } %>
+    </li>
   '''
 
   @render: ($el)->
-    $users = $("<div class='user_list'></div>")
+    $users = $("<ul class='user_list'></ul>")
     $el.next().hide();
 
-    for user in Kandan.Data.ActiveUsers.all()
+    users = _(Kandan.Data.ActiveUsers.all()).chain().sortBy("username").reverse().sortBy("is_admin").reverse().value();
+
+    for user in users
       displayName   = null
       displayName   = user.username # Defaults to username
       displayName ||= user.email # Revert to user email address if that's all we have
