@@ -45,40 +45,40 @@ group :production do
   gem 'kandan-count'
 end
 
-group :development do
-  gem 'kandan-count-dev'
-  gem 'pry-rails'
-  gem 'quiet_assets'
-  gem 'awesome_print'
-# gem 'better_errors'
-  gem 'binding_of_caller'
+#group :development do
+#  gem 'kandan-count-dev'
+#  gem 'pry-rails'
+#  gem 'quiet_assets'
+#  gem 'awesome_print'
+#  gem 'better_errors'
+#  gem 'binding_of_caller'
 #  if RUBY_VERSION >= '2.0.0'
 #    gem 'byebug'
 #  else
 #    gem 'debugger'
 #  end
-end
+#end
 
-group :test do
-  gem 'faker'
-  gem 'rspec-rails', '~> 3.1'
-  gem 'shoulda-matchers'
-  gem 'factory_girl_rails'
-  gem 'simplecov', :require => false
-  gem 'coveralls', :require => false
-  gem 'poltergeist'
-  gem 'launchy'
-  gem 'capybara'
-end
+#group :test do
+#   gem 'faker'
+#   gem 'rspec-rails', '~> 3.1'
+#   gem 'shoulda-matchers'
+#   gem 'factory_girl_rails'
+#   gem 'simplecov', :require => false
+#   gem 'coveralls', :require => false
+#   gem 'poltergeist'
+#   gem 'launchy'
+#   gem 'capybara'
+#end
 
-group :development, :test do
-  gem 'sqlite3'
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-spork'
-  gem 'database_cleaner'
-  gem 'jasmine'
-end
+#group :development, :test do
+#  gem 'sqlite3'
+#  gem 'guard'
+#  gem 'guard-rspec'
+#  gem 'guard-spork'
+#  gem 'database_cleaner'
+#  gem 'jasmine'
+#end
 
 
 # JS runtime
